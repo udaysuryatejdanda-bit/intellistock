@@ -66,11 +66,21 @@ public class ProductService {
         if (product.getName() == null || product.getName().isBlank()) {
             throw new IllegalArgumentException("Product name is required");
         }
+        if (product.getUnit() == null || product.getUnit().isBlank()) {
+            throw new IllegalArgumentException("Unit of measurement is required");
+        }
         if (product.getReorderThreshold() < 0 || product.getCriticalThreshold() < 0) {
             throw new IllegalArgumentException("Thresholds cannot be negative");
         }
         if (product.getCriticalThreshold() > product.getReorderThreshold()) {
             throw new IllegalArgumentException("Critical threshold cannot exceed the reorder threshold");
+        }
+        if (product.getCostPriceCents() < 0 || product.getSellingPriceCents() < 0) {
+            throw new IllegalArgumentException("Prices cannot be negative");
+        }
+        if (product.getExpiryDate() != null && !product.getExpiryDate().isBlank()
+                && Dates.parseDate(product.getExpiryDate()).isEmpty()) {
+            throw new IllegalArgumentException("Expiry date must use YYYY-MM-DD");
         }
         Product updated = database.inTransaction(connection -> {
             Product existing = products.findById(connection, product.getId())
@@ -148,12 +158,12 @@ public class ProductService {
             throw new IllegalArgumentException("Reorder threshold cannot be negative");
         }
         int critical = request.getCriticalThreshold() == null
-                ? Math.max(1, request.getReorderThreshold() / 2)
+                ? (request.getReorderThreshold() == 0 ? 0 : Math.max(1, request.getReorderThreshold() / 2))
                 : request.getCriticalThreshold();
         if (critical < 0) {
             throw new IllegalArgumentException("Critical threshold cannot be negative");
         }
-        if (critical > request.getReorderThreshold() && request.getReorderThreshold() > 0) {
+        if (critical > request.getReorderThreshold()) {
             throw new IllegalArgumentException("Critical threshold cannot exceed the reorder threshold");
         }
         request.setCriticalThreshold(critical);

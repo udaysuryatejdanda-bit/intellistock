@@ -55,10 +55,7 @@ public class UserRepository {
             statement.setInt(5, user.isActive() ? 1 : 0);
             statement.setString(6, user.getCreatedAt());
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 

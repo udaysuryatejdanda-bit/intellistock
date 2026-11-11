@@ -37,6 +37,7 @@ public class DemandPage implements Page {
     private final MetricCard windowCard = new MetricCard("Analysis Window", Theme.SIDEBAR_ACTIVE);
 
     private final JComboBox<String> filterCombo = new JComboBox<>();
+    private final JButton printReportButton = Theme.secondary("Export PDF Report");
     private final JButton refreshButton = Theme.secondary("Run Analysis");
     private final JButton createPoButton = Theme.primary("Create Purchase Order");
 
@@ -82,6 +83,7 @@ public class DemandPage implements Page {
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 4));
         right.setOpaque(false);
+        right.add(printReportButton);
         right.add(refreshButton);
         right.add(createPoButton);
 
@@ -103,8 +105,28 @@ public class DemandPage implements Page {
         root.add(tableCard, BorderLayout.CENTER);
 
         filterCombo.addActionListener(e -> applyFilter());
+        printReportButton.addActionListener(e -> printSelectedReport());
         refreshButton.addActionListener(e -> refresh());
         createPoButton.addActionListener(e -> frame.showPage("orders"));
+    }
+
+    private void printSelectedReport() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow < 0) {
+            UiSupport.error(root, "Please select a product from the table first to generate its PDF demand report.");
+            return;
+        }
+        int modelRow = table.convertRowIndexToModel(selectedRow);
+        String sku = (String) tableModel.getValueAt(modelRow, 0);
+        DemandAnalytics.ProductDemand target = loadedDemand.stream()
+                .filter(d -> d.product != null && sku.equalsIgnoreCase(d.product.getSku()))
+                .findFirst()
+                .orElse(null);
+        if (target == null) {
+            UiSupport.error(root, "Selected product demand data could not be found.");
+            return;
+        }
+        DemandPrintReport.printForProduct(target);
     }
 
     @Override

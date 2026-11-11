@@ -67,6 +67,14 @@ public class MainFrame extends JFrame {
         });
     }
 
+    public void showMovementsForProduct(long productId) {
+        showPage("movements");
+        Page p = pages.get("movements");
+        if (p instanceof StockMovementsPage smp) {
+            smp.selectProduct(productId);
+        }
+    }
+
     public void refreshAll() {
         pages.values().forEach(Page::refresh);
         showPage(current);
@@ -135,8 +143,12 @@ public class MainFrame extends JFrame {
         button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         button.setBackground(Theme.SIDEBAR);
         button.setForeground(Color.WHITE);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 13));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
         button.setHorizontalAlignment(JButton.LEFT);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         if (!"logout".equals(id)) {

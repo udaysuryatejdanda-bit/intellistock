@@ -231,6 +231,17 @@ public class StockMovementsPage implements Page {
         }.execute();
     }
 
+    public void selectProduct(long productId) {
+        for (int i = 0; i < productSelect.getItemCount(); i++) {
+            Product p = productSelect.getItemAt(i);
+            if (p != null && p.getId() == productId) {
+                productSelect.setSelectedIndex(i);
+                updateStockDisplay();
+                break;
+            }
+        }
+    }
+
     private void updateStockDisplay() {
         Product p = (Product) productSelect.getSelectedItem();
         if (p != null) {
@@ -291,9 +302,17 @@ public class StockMovementsPage implements Page {
         int qty;
         try {
             qty = Integer.parseInt(qtyStr);
-            if (qty <= 0) throw new NumberFormatException();
+            if (type == MovementType.ADJUSTMENT || type == MovementType.CORRECTION) {
+                if (qty == 0) throw new IllegalArgumentException("Adjustment quantity cannot be zero.");
+            } else {
+                if (qty <= 0) throw new IllegalArgumentException("Quantity must be a positive integer greater than zero.");
+            }
         } catch (NumberFormatException e) {
-            UiSupport.error(root, "Quantity must be a positive integer greater than zero.");
+            UiSupport.error(root, "Quantity must be a valid whole number"
+                    + (type == MovementType.ADJUSTMENT || type == MovementType.CORRECTION ? " (e.g. -5 to deduct, 5 to add)." : "."));
+            return;
+        } catch (IllegalArgumentException e) {
+            UiSupport.error(root, e.getMessage());
             return;
         }
 

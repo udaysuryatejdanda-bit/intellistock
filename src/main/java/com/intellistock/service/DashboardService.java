@@ -9,6 +9,7 @@ import com.intellistock.model.Product;
 import com.intellistock.model.PurchaseOrder;
 import com.intellistock.model.StockMovement;
 import com.intellistock.model.StockStatus;
+import com.intellistock.repository.AlertRepository;
 import com.intellistock.repository.ProductRepository;
 import com.intellistock.repository.PurchaseOrderRepository;
 import com.intellistock.repository.StockMovementRepository;
@@ -24,6 +25,7 @@ public class DashboardService {
     private final ProductRepository products = new ProductRepository();
     private final StockMovementRepository movements = new StockMovementRepository();
     private final PurchaseOrderRepository purchaseOrders = new PurchaseOrderRepository();
+    private final AlertRepository alerts = new AlertRepository();
     private final AlertEngine alertEngine;
     private final DemandAnalytics demandAnalytics;
 
@@ -59,7 +61,7 @@ public class DashboardService {
             snapshot.pendingOrders = purchaseOrders.findByStatus(connection, OrderStatus.PENDING).size()
                     + purchaseOrders.findByStatus(connection, OrderStatus.PARTIALLY_RECEIVED).size();
             snapshot.recentMovements = movements.findRecent(connection, 8);
-            snapshot.openAlerts = alertEngine.openAlerts();
+            snapshot.openAlerts = alerts.findOpen(connection);
             List<DemandAnalytics.ProductDemand> demand = demandAnalytics.analyze(connection);
             for (DemandAnalytics.ProductDemand row : demand) {
                 if (row.highDemand) {

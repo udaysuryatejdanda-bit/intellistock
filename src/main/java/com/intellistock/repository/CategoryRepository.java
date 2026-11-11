@@ -36,10 +36,7 @@ public class CategoryRepository {
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO categories(name) VALUES (?)")) {
             statement.setString(1, name);
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 }

@@ -515,6 +515,10 @@ public class PurchaseOrdersPage implements Page {
                 try {
                     Product p = (Product) prodCombo.getSelectedItem();
                     if (p == null) throw new IllegalArgumentException("Product is required");
+                    boolean alreadyPresent = orderItems.stream().anyMatch(item -> item.getProductId() == p.getId());
+                    if (alreadyPresent) {
+                        throw new IllegalArgumentException("Product '" + p.getSku() + "' is already in this purchase order. Please remove the existing line first if you wish to change it.");
+                    }
                     int q = Integer.parseInt(qtyFld.getText().trim());
                     if (q <= 0) throw new IllegalArgumentException("Quantity must be greater than zero");
                     long cost = Money.toCents(costFld.getText().trim());

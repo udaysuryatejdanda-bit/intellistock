@@ -86,4 +86,14 @@ class AuthServiceTest {
         assertTrue(Permissions.canManageUsers(admin));
         assertFalse(Permissions.canManageUsers(staff));
     }
+
+    @Test
+    void testPasswordHasherHandlesMalformedHashesGracefully() {
+        com.intellistock.security.PasswordHasher hasher = new com.intellistock.security.PasswordHasher();
+        assertFalse(hasher.verify("pass".toCharArray(), "not-a-hash"));
+        assertFalse(hasher.verify("pass".toCharArray(), "-1:salt:hash"));
+        assertFalse(hasher.verify("pass".toCharArray(), "abc:bad-salt:bad-hash"));
+        assertFalse(hasher.verify(null, "120000:salt:hash"));
+        assertFalse(hasher.verify("pass".toCharArray(), null));
+    }
 }

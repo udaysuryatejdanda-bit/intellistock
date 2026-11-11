@@ -103,8 +103,10 @@ public class AlertEngine {
             }
             String message = delayed
                     ? "Purchase order #" + order.getId() + " is past its expected delivery date"
-                    : "Purchase order #" + order.getId() + " is awaiting receipt";
-            upsertPoAlert(connection, order, delayed || order.getStatus() == OrderStatus.PENDING, delayed
+                    : (order.getStatus() == OrderStatus.PARTIALLY_RECEIVED
+                        ? "Purchase order #" + order.getId() + " is partially received; remaining items pending"
+                        : "Purchase order #" + order.getId() + " is awaiting receipt");
+            upsertPoAlert(connection, order, true, delayed
                     ? AlertSeverity.WARNING : AlertSeverity.INFO, message);
         }
         for (PurchaseOrder order : purchaseOrders.findAll(connection)) {

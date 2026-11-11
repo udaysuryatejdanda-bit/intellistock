@@ -54,6 +54,7 @@ public final class Database {
                 throw new IllegalStateException("schema.sql is missing from the application resources");
             }
             String sql = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+            statement.execute("PRAGMA journal_mode = WAL");
             statement.execute("PRAGMA foreign_keys = ON");
             for (String batch : sql.split(";")) {
                 String trimmed = batch.trim();

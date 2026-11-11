@@ -1,7 +1,6 @@
 package com.intellistock.report;
 
 import com.intellistock.analytics.DemandAnalytics.ProductDemand;
-import com.intellistock.util.AppPaths;
 import com.intellistock.util.Money;
 
 import java.awt.BasicStroke;
@@ -14,9 +13,6 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;

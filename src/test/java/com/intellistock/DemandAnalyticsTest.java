@@ -83,4 +83,28 @@ class DemandAnalyticsTest {
         assertEquals(2, slowDemand.recentOutbound);
         assertEquals("SLOW", slowDemand.velocity);
     }
+
+    @Test
+    void testDemandPrintReportConstructAndRender() throws Exception {
+        context.inventory().dispatch(admin, fastItem.getId(), 20, "Sales", "ORD-TEST");
+        List<DemandAnalytics.ProductDemand> results = context.demand().analyze();
+        DemandAnalytics.ProductDemand itemDemand = results.get(0);
+
+        com.intellistock.report.DemandPrintReport report = new com.intellistock.report.DemandPrintReport(itemDemand);
+
+        // Render page 0 onto an offscreen BufferedImage graphics to verify formatting/KaTeX/math/drawing safety
+        java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(600, 800, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+        java.awt.Graphics2D g2 = img.createGraphics();
+        java.awt.print.PageFormat pf = new java.awt.print.PageFormat();
+        java.awt.print.Paper paper = new java.awt.print.Paper();
+        paper.setImageableArea(20, 20, 560, 760);
+        pf.setPaper(paper);
+
+        int result = report.print(g2, pf, 0);
+        assertEquals(java.awt.print.Printable.PAGE_EXISTS, result);
+        g2.dispose();
+
+        int noPage = report.print(img.createGraphics(), pf, 1);
+        assertEquals(java.awt.print.Printable.NO_SUCH_PAGE, noPage);
+    }
 }

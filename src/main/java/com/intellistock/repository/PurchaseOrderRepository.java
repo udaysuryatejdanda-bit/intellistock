@@ -36,10 +36,7 @@ public class PurchaseOrderRepository {
             JdbcSupport.setNullableString(statement, 7, order.getSubmittedAt());
             JdbcSupport.setNullableString(statement, 8, order.getCancelledAt());
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 
@@ -93,10 +90,7 @@ public class PurchaseOrderRepository {
             JdbcSupport.setNullableString(statement, 4, notes);
             statement.setString(5, idempotencyKey);
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 

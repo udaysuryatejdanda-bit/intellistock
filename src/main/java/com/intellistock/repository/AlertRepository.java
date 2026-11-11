@@ -81,10 +81,7 @@ public class AlertRepository {
             statement.setString(9, alert.getUpdatedAt());
             JdbcSupport.setNullableString(statement, 10, alert.getResolvedAt());
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 

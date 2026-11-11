@@ -64,10 +64,7 @@ public class SupplierRepository {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             bind(statement, supplier);
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 

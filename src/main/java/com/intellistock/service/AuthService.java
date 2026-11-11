@@ -14,7 +14,7 @@ public class AuthService {
     private final UserRepository users = new UserRepository();
     private final AuditRepository audit = new AuditRepository();
     private final PasswordHasher hasher = new PasswordHasher();
-    private User currentUser;
+    private volatile User currentUser;
 
     public AuthService(Database database) {
         this.database = database;

@@ -89,10 +89,7 @@ public class ProductRepository {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             bind(statement, product, false);
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 

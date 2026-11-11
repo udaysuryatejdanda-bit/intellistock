@@ -99,7 +99,7 @@ graph TD
 
 ### Step 1: Open Terminal in Project Directory
 ```powershell
-cd C:\Users\udays\intellistock-ai
+cd intellistock-ai
 ```
 
 ### Step 2: Compile the Project
@@ -143,8 +143,8 @@ The application initializes with demonstration user accounts:
 
 | Role | Username | Password | Permissions |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | `admin` | `Admin@123` | Full Access (Inventory, Dispatches, Adjustments, User Management, Backups, Settings) |
-| **Warehouse Staff** | `staff` | `Staff@123` | Operational Access (View Catalog, Register Products, Receipts, Dispatches, View Alerts) |
+| **Administrator** | `admin` | Change the seeded demo password after first launch | Full Access (Inventory, Dispatches, Adjustments, User Management, Backups, Settings) |
+| **Warehouse Staff** | `staff` | Change the seeded demo password after first launch | Operational Access (View Catalog, Register Products, Receipts, Dispatches, View Alerts) |
 
 ---
 

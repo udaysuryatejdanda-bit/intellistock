@@ -145,4 +145,38 @@ class ProductServiceTest {
         assertTrue(archived.isArchived());
         assertEquals(StockStatus.ARCHIVED, archived.getStockStatus());
     }
+
+    @Test
+    void testUpdateMetadataValidations() {
+        ProductRegistrationRequest req = new ProductRegistrationRequest();
+        req.setName("Valid Name");
+        req.setSku("VAL-001");
+        req.setNewCategoryName("Category Valid");
+        req.setUnit("units");
+        req.setInitialQuantity(10);
+        req.setReorderThreshold(5);
+        req.setCostPriceCents(100);
+        req.setSellingPriceCents(200);
+
+        Product p = context.products().register(admin, req);
+
+        // Blank unit should fail
+        p.setUnit("  ");
+        assertThrows(IllegalArgumentException.class, () -> context.products().updateMetadata(admin, p));
+        p.setUnit("units");
+
+        // Negative price should fail
+        p.setCostPriceCents(-10);
+        assertThrows(IllegalArgumentException.class, () -> context.products().updateMetadata(admin, p));
+        p.setCostPriceCents(100);
+
+        // Invalid expiry format should fail
+        p.setExpiryDate("invalid-date");
+        assertThrows(IllegalArgumentException.class, () -> context.products().updateMetadata(admin, p));
+        p.setExpiryDate("2026-12-31");
+
+        // Valid update succeeds
+        Product ok = context.products().updateMetadata(admin, p);
+        assertEquals("2026-12-31", ok.getExpiryDate());
+    }
 }

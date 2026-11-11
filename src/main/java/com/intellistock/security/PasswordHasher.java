@@ -34,11 +34,18 @@ public final class PasswordHasher {
         if (parts.length != 3) {
             return false;
         }
-        int iterations = Integer.parseInt(parts[0]);
-        byte[] salt = decode(parts[1]);
-        byte[] expected = decode(parts[2]);
-        byte[] actual = pbkdf2(password, salt, iterations);
-        return slowEquals(expected, actual);
+        try {
+            int iterations = Integer.parseInt(parts[0]);
+            if (iterations <= 0) {
+                return false;
+            }
+            byte[] salt = decode(parts[1]);
+            byte[] expected = decode(parts[2]);
+            byte[] actual = pbkdf2(password, salt, iterations);
+            return slowEquals(expected, actual);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     private static byte[] pbkdf2(char[] password, byte[] salt, int iterations) {

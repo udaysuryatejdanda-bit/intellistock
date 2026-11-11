@@ -70,7 +70,7 @@
    - Run `.\run.cmd` or `java -jar target\intellistock-ai.jar`.
    - Point out clean native Swing startup and Login window.
 2. **Staff Sign In:**
-   - Log in as `staff` / `Staff@123`.
+   - Log in with the seeded staff account and change its password before sharing the app.
    - Note the restricted sidebar (User Management is hidden for non-admins).
 3. **Register a New Product:**
    - Navigate to **Register Product**.
@@ -94,7 +94,7 @@
    - Navigate to **Demand Analysis**.
    - Show moving-average daily run rates, velocity badges, and suggested reorder quantities.
 8. **Admin Features & Disaster Recovery:**
-   - Log out, sign in as `admin` / `Admin@123`.
+   - Log out and sign in with the seeded admin account.
    - Show **User Management** (add user, change password).
    - Navigate to **Settings & Maintenance** -> click **Create Backup Now**.
    - Show instant SQLite database backup created.

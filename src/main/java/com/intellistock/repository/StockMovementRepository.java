@@ -38,10 +38,7 @@ public class StockMovementRepository {
             statement.setLong(11, movement.getUserId());
             statement.setString(12, movement.getOccurredAt());
             statement.executeUpdate();
-            try (ResultSet keys = connection.prepareStatement("SELECT last_insert_rowid()").executeQuery()) {
-                keys.next();
-                return keys.getLong(1);
-            }
+            return JdbcSupport.getLastInsertId(connection);
         }
     }
 

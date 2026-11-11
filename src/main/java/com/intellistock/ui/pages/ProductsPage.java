@@ -292,7 +292,8 @@ public class ProductsPage implements Page {
 
     private void recordMovementForSelected() {
         Product selected = getSelectedProduct();
-        frame.showPage("movements");
+        if (selected == null) return;
+        frame.showMovementsForProduct(selected.getId());
     }
 
     private void editSelected() {
