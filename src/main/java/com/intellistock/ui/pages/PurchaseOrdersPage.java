@@ -16,17 +16,21 @@ import com.intellistock.util.Dates;
 import com.intellistock.util.Money;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +38,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -473,7 +478,7 @@ public class PurchaseOrdersPage implements Page {
 
         addLineBtn.addActionListener(e -> {
             JDialog itemDialog = new JDialog(dialog, "Add Product Line", true);
-            itemDialog.setSize(380, 260);
+            itemDialog.setSize(420, 310);
             itemDialog.setLocationRelativeTo(dialog);
 
             JPanel itemForm = new JPanel(new GridBagLayout());
@@ -483,24 +488,106 @@ public class PurchaseOrdersPage implements Page {
             ic.insets = new Insets(6, 6, 6, 6);
             ic.weightx = 1.0;
 
-            JComboBox<Product> prodCombo = new JComboBox<>();
-            for (Product p : allProducts) prodCombo.addItem(p);
+            // ── Product field: editable text with live dropdown ──────────────
+            JTextField productSearch = UiSupport.field();
+            productSearch.setPreferredSize(new Dimension(280, 28));
+            JLabel productHint = new JLabel(" ");
+            productHint.setFont(Theme.SMALL);
+            productHint.setForeground(Theme.MUTED);
+
+            // Popup list for suggestions
+            JPopupMenu suggestionPopup = new JPopupMenu();
+            JList<Product> suggestionList = new JList<>();
+            suggestionList.setCellRenderer(new DefaultListCellRenderer() {
+                @Override
+                public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                               boolean isSelected, boolean hasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, hasFocus);
+                    if (value instanceof Product p) {
+                        setText(p.getSku() + "  —  " + p.getName());
+                        setFont(Theme.BODY);
+                    }
+                    return this;
+                }
+            });
+            JScrollPane suggestionScroll = new JScrollPane(suggestionList);
+            suggestionScroll.setPreferredSize(new Dimension(280, 120));
+            suggestionPopup.add(suggestionScroll);
+            suggestionPopup.setFocusable(false);
+
+            // Track which product is confirmed (null = custom name)
+            final Product[] selectedProduct = {null};
 
             JTextField qtyFld = UiSupport.field();
             qtyFld.setText("10");
 
             JTextField costFld = UiSupport.field();
-            if (prodCombo.getItemCount() > 0) {
-                costFld.setText(Money.toPlain(prodCombo.getItemAt(0).getCostPriceCents()));
-            }
 
-            prodCombo.addActionListener(ev -> {
-                Product p = (Product) prodCombo.getSelectedItem();
-                if (p != null) costFld.setText(Money.toPlain(p.getCostPriceCents()));
+            // Track whether we're programmatically setting text (to suppress the doc listener)
+            final boolean[] settingProgrammatically = {false};
+
+            // Auto-filter list as user types
+            productSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+                private void update() {
+                    if (settingProgrammatically[0]) return;
+                    String text = productSearch.getText().trim();
+                    selectedProduct[0] = null; // reset confirmed selection
+                    productHint.setText(" ");
+                    if (text.isEmpty()) {
+                        suggestionPopup.setVisible(false);
+                        return;
+                    }
+                    String lower = text.toLowerCase();
+                    List<Product> matches = allProducts.stream()
+                            .filter(p -> p.getName().toLowerCase().contains(lower)
+                                    || p.getSku().toLowerCase().contains(lower))
+                            .limit(8)
+                            .toList();
+                    if (matches.isEmpty()) {
+                        suggestionPopup.setVisible(false);
+                        productHint.setText("New product — will be registered on save");
+                        productHint.setForeground(Theme.INFO);
+                    } else {
+                        Product[] arr = matches.toArray(new Product[0]);
+                        suggestionList.setListData(arr);
+                        if (!suggestionPopup.isVisible()) {
+                            suggestionPopup.show(productSearch, 0, productSearch.getHeight());
+                        }
+                    }
+                }
+                @Override public void insertUpdate(javax.swing.event.DocumentEvent e) { update(); }
+                @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { update(); }
+                @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
+            });
+
+            // Click in suggestion list → confirm selection
+            suggestionList.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    Product p = suggestionList.getSelectedValue();
+                    if (p != null) {
+                        selectedProduct[0] = p;
+                        settingProgrammatically[0] = true;
+                        productSearch.setText(p.getSku() + " — " + p.getName());
+                        settingProgrammatically[0] = false;
+                        costFld.setText(com.intellistock.util.Money.toPlain(p.getCostPriceCents()));
+                        productHint.setText("SKU: " + p.getSku());
+                        productHint.setForeground(Theme.SUCCESS);
+                        suggestionPopup.setVisible(false);
+                    }
+                }
             });
 
             ic.gridy = 0; ic.gridx = 0;
-            itemForm.add(UiSupport.labeled("Product *", prodCombo, new JLabel(" ")), ic);
+            JPanel productPanel = new JPanel(new BorderLayout(2, 2));
+            productPanel.setOpaque(false);
+            JLabel productLabel = new JLabel("Product *");
+            productLabel.setFont(Theme.SMALL);
+            productPanel.add(productLabel, BorderLayout.NORTH);
+            productPanel.add(productSearch, BorderLayout.CENTER);
+            productPanel.add(productHint, BorderLayout.SOUTH);
+            itemForm.add(productPanel, ic);
+
             ic.gridy = 1;
             itemForm.add(UiSupport.labeled("Quantity Ordered *", qtyFld, new JLabel(" ")), ic);
             ic.gridy = 2;
@@ -513,30 +600,72 @@ public class PurchaseOrdersPage implements Page {
             cancelItem.addActionListener(ev -> itemDialog.dispose());
             saveItem.addActionListener(ev -> {
                 try {
-                    Product p = (Product) prodCombo.getSelectedItem();
-                    if (p == null) throw new IllegalArgumentException("Product is required");
-                    boolean alreadyPresent = orderItems.stream().anyMatch(item -> item.getProductId() == p.getId());
-                    if (alreadyPresent) {
-                        throw new IllegalArgumentException("Product '" + p.getSku() + "' is already in this purchase order. Please remove the existing line first if you wish to change it.");
-                    }
+                    String searchText = productSearch.getText().trim();
+                    if (searchText.isEmpty()) throw new IllegalArgumentException("Product name is required");
+
                     int q = Integer.parseInt(qtyFld.getText().trim());
                     if (q <= 0) throw new IllegalArgumentException("Quantity must be greater than zero");
-                    long cost = Money.toCents(costFld.getText().trim());
+                    long cost = com.intellistock.util.Money.toCents(costFld.getText().trim());
 
                     PurchaseOrderItem poi = new PurchaseOrderItem();
-                    poi.setProductId(p.getId());
-                    poi.setProductName(p.getName());
-                    poi.setSku(p.getSku());
                     poi.setQuantityOrdered(q);
                     poi.setUnitCostCents(cost);
 
+                    if (selectedProduct[0] != null) {
+                        // Existing inventory product
+                        Product p = selectedProduct[0];
+                        boolean alreadyPresent = orderItems.stream().anyMatch(item -> item.getProductId() == p.getId());
+                        if (alreadyPresent) {
+                            throw new IllegalArgumentException("'" + p.getSku() + "' is already in this order. Remove the existing line first.");
+                        }
+                        poi.setProductId(p.getId());
+                        poi.setProductName(p.getName());
+                        poi.setSku(p.getSku());
+                        lineModel.addRow(new Object[]{
+                                p.getSku() + " — " + p.getName(),
+                                q,
+                                com.intellistock.util.Money.format(cost),
+                                com.intellistock.util.Money.format(poi.lineTotalCents())
+                        });
+                    } else {
+                        // Custom / new product name: productId = -1 signals "register on save"
+                        // Strip any " — " SKU prefix if user edited after selection
+                        String customName = searchText.contains(" — ")
+                                ? searchText.substring(searchText.indexOf(" — ") + 3).trim()
+                                : searchText;
+                        // Check if it accidentally matches an existing name exactly
+                        Product exact = allProducts.stream()
+                                .filter(p -> p.getName().equalsIgnoreCase(customName))
+                                .findFirst().orElse(null);
+                        if (exact != null) {
+                            boolean alreadyPresent = orderItems.stream().anyMatch(item -> item.getProductId() == exact.getId());
+                            if (alreadyPresent) {
+                                throw new IllegalArgumentException("'" + exact.getSku() + "' is already in this order.");
+                            }
+                            poi.setProductId(exact.getId());
+                            poi.setProductName(exact.getName());
+                            poi.setSku(exact.getSku());
+                            lineModel.addRow(new Object[]{
+                                    exact.getSku() + " — " + exact.getName(),
+                                    q,
+                                    com.intellistock.util.Money.format(cost),
+                                    com.intellistock.util.Money.format(poi.lineTotalCents())
+                            });
+                        } else {
+                            // Brand-new product — mark with productId = -1
+                            poi.setProductId(-1);
+                            poi.setProductName(customName);
+                            poi.setSku(""); // will be generated on save
+                            lineModel.addRow(new Object[]{
+                                    "NEW: " + customName,
+                                    q,
+                                    com.intellistock.util.Money.format(cost),
+                                    com.intellistock.util.Money.format(poi.lineTotalCents())
+                            });
+                        }
+                    }
+
                     orderItems.add(poi);
-                    lineModel.addRow(new Object[]{
-                            p.getSku() + " — " + p.getName(),
-                            q,
-                            Money.format(cost),
-                            Money.format(poi.lineTotalCents())
-                    });
                     itemDialog.dispose();
                 } catch (Exception ex) {
                     UiSupport.error(itemDialog, ex.getMessage());
@@ -574,17 +703,52 @@ public class PurchaseOrdersPage implements Page {
                 if (sup == null) throw new IllegalArgumentException("Supplier is required.");
                 if (orderItems.isEmpty()) throw new IllegalArgumentException("Please add at least one line item.");
 
+                // Auto-register any new products (productId == -1) before saving the PO
+                User user = AppContext.get().auth().currentUser();
+                List<String> newlyRegistered = new ArrayList<>();
+                for (PurchaseOrderItem item : orderItems) {
+                    if (item.getProductId() == -1) {
+                        // Build a minimal registration request for the new product
+                        com.intellistock.model.ProductRegistrationRequest req =
+                                new com.intellistock.model.ProductRegistrationRequest();
+                        String rawName = item.getProductName().trim();
+                        req.setName(rawName);
+                        // Auto-generate SKU: first 3 letters of name + 3-digit millis suffix
+                        String skuBase = rawName.replaceAll("[^A-Za-z0-9]", "").toUpperCase();
+                        if (skuBase.length() > 4) skuBase = skuBase.substring(0, 4);
+                        String sku = skuBase + "-" + String.format("%03d", (System.currentTimeMillis() % 1000));
+                        req.setSku(sku);
+                        req.setUnit("units");
+                        req.setInitialQuantity(0);
+                        req.setReorderThreshold(5);
+                        req.setCriticalThreshold(2);
+                        req.setCostPriceCents(item.getUnitCostCents());
+                        req.setSellingPriceCents(item.getUnitCostCents()); // default same as cost
+                        req.setNewCategoryName("General");
+                        req.setPreferredSupplierId(sup.getId());
+                        Product registered = AppContext.get().products().register(user, req);
+                        item.setProductId(registered.getId());
+                        item.setProductName(registered.getName());
+                        item.setSku(registered.getSku());
+                        newlyRegistered.add(registered.getSku() + " — " + registered.getName());
+                    }
+                }
+
                 PurchaseOrder newPo = new PurchaseOrder();
                 newPo.setSupplierId(sup.getId());
                 newPo.setExpectedDeliveryDate(expectedField.getText().trim().isEmpty() ? null : expectedField.getText().trim());
                 newPo.setNotes(notesArea.getText().trim().isEmpty() ? null : notesArea.getText().trim());
                 newPo.setItems(orderItems);
 
-                User user = AppContext.get().auth().currentUser();
                 AppContext.get().purchaseOrders().saveDraft(user, newPo);
-                UiSupport.info(dialog, "Purchase order draft created successfully!");
+
+                String msg = "Purchase order draft created successfully!";
+                if (!newlyRegistered.isEmpty()) {
+                    msg += "\n\nNew products registered in inventory:\n• " + String.join("\n• ", newlyRegistered);
+                }
+                UiSupport.info(dialog, msg);
                 dialog.dispose();
-                refresh();
+                frame.refreshAll();
             } catch (Exception ex) {
                 Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
                 UiSupport.error(dialog, "Error: " + cause.getMessage());
