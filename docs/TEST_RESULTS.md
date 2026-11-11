@@ -1,4 +1,4 @@
-# IntelliStock AI — Automated Test Results & Test Cases
+# IntelliStock — Automated Test Results & Test Cases
 
 ## 1. Test Suite Summary
 

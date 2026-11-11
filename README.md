@@ -1,4 +1,4 @@
-# IntelliStock AI — Intelligent Inventory & Stock Management System
+# IntelliStock — Inventory & Stock Management System
 
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://adoptium.net/)
 [![Maven](https://img.shields.io/badge/Maven-3.9.9-blue.svg)](https://maven.apache.org/)
@@ -6,7 +6,7 @@
 [![GUI](https://img.shields.io/badge/UI-Java%20Swing-green.svg)]()
 [![Tests](https://img.shields.io/badge/Tests-20%2F20%20Passing-brightgreen.svg)]()
 
-> **Project Purpose:** IntelliStock AI is an enterprise desktop inventory and stock management system designed for physical businesses, warehouses, and distribution centers. It manages products, real-time inventory counts, supplier relationships, purchase orders, partial goods receipts, dispatches, and rule-based smart stock alerts.  
+> **Project Purpose:** IntelliStock is an enterprise desktop inventory and stock management system designed for physical businesses, warehouses, and distribution centers. It manages products, real-time inventory counts, supplier relationships, purchase orders, partial goods receipts, dispatches, and rule-based stock alerts.  
 > *(Note: This is a physical inventory system, **not** a stock-market trading application.)*
 
 ---
@@ -29,8 +29,8 @@
 - **Product Registration:** Complete registration form capturing SKU, product name, category, unit of measurement, initial stock, reorder threshold, critical threshold, warehouse/rack locations, cost price, selling price, barcode, and expiry date. Validates required inputs, enforces duplicate SKU constraints, and records opening stock movements within a single atomic database transaction.
 - **Real-Time Product Inventory:** Search, filter by category or stock status (`NORMAL`, `LOW`, `CRITICAL`, `OUT_OF_STOCK`, `ARCHIVED`), view inventory valuation, edit product metadata, and archive discontinued items.
 - **Transaction-Safe Stock Movements:** Record receipts, customer dispatches, customer returns, damaged items, and audit-logged adjustments. Enforces non-negative stock constraints with automated rollbacks on invalid operations.
-- **Smart Stock Alert Engine:** Rule-based evaluations of inventory records trigger out-of-stock, critical-stock, low-stock, and expiration alerts. Features alert acknowledgement and automated resolution upon replenishment.
-- **Demand Analytics & Moving-Average Forecasting:** Evaluates recent daily outbound dispatches against historical baseline periods to calculate inventory run rate, days remaining, velocity classification (`FAST`, `MEDIUM`, `SLOW`, `NO_MOVEMENT`), and suggested reorder quantities. *(Note: Algorithm is transparent moving-average math, not an opaque machine-learning model).*
+- **Stock Alert Engine:** Rule-based evaluations of inventory records trigger out-of-stock, critical-stock, low-stock, and expiration alerts. Features alert acknowledgement and automated resolution upon replenishment.
+- **Demand Analytics & Moving-Average Forecasting:** Evaluates recent daily outbound dispatches against historical baseline periods to calculate inventory run rate, days remaining, velocity classification (`FAST`, `MEDIUM`, `SLOW`, `NO_MOVEMENT`), and suggested reorder quantities using clear moving-average formulas.
 - **Purchase Order Procurement Lifecycle:** Manage end-to-end purchasing: draft creation, order submission, partial/full goods receipt with automatic stock increments, and cancellations.
 - **Supplier Relationship Management:** Maintain vendor directories, contact details, active statuses, and linked catalog supplies.
 - **Reporting & CSV Export:** Live preview and single-click UTF-8 BOM CSV export for inventory valuation, stock statuses, movement audit trails, supplier directories, and expiry tracking.
@@ -54,7 +54,7 @@
 
 ## 3. Architecture Overview
 
-IntelliStock AI strictly adheres to a **3-Tier Layered Architecture** with Object-Oriented design principles:
+IntelliStock strictly adheres to a **3-Tier Layered Architecture** with Object-Oriented design principles:
 
 ```mermaid
 graph TD

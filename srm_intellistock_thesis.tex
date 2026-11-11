@@ -59,7 +59,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Title page
 
-\title{INTELLISTOCK AI: AN INTELLIGENT DESKTOP INVENTORY AND WAREHOUSE MANAGEMENT SYSTEM WITH TRANSACTIONAL INTEGRITY AND DEMAND ANALYTICS}
+\title{INTELLISTOCK: AN INTELLIGENT DESKTOP INVENTORY AND WAREHOUSE MANAGEMENT SYSTEM WITH TRANSACTIONAL INTEGRITY AND DEMAND ANALYTICS}
 
 \firstauthor{D. UDAY SURYA TEJ}
 \firstauthorregno{[Registration number omitted]}
@@ -92,7 +92,7 @@
 \begin{doublespacing}
 {\large\noindent Inventory management represents a vital backbone for warehousing operations, regional distributors, and manufacturing enterprises. Conventional reliance on decentralized spreadsheet workbooks and manual logbooks frequently introduces data inconsistencies, inadvertent stock depletion, untracked partial deliveries, and economic losses attributable to unnoticed shelf-life expiration. These persistent drawbacks necessitate an autonomous, resilient, and fully auditable desktop-based inventory control platform.
 
-\textbf{IntelliStock AI} is an enterprise-grade desktop inventory and stock management ecosystem developed in Java 21, employing Java Swing for an interactive graphical user interface and SQLite via native Java Database Connectivity (JDBC) for atomic, persistent data storage. Adhering to a robust 3-Tier Layered Architecture, the system ensures a strict separation between presentation workflows, transactional service logic, and repository-level data persistence. Core capabilities encompass atomic product provisioning with unique SKU validation, dynamic catalog monitoring with real-time stock-state badges (NORMAL, LOW, CRITICAL, OUT\_OF\_STOCK, ARCHIVED), and multi-category movement processing (receipts, dispatches, returns, damages, corrections) enforcing strict non-negative quantity guarantees (\texttt{CHECK (quantity >= 0)}).
+\textbf{INTELLISTOCK} is an enterprise-grade desktop inventory and stock management ecosystem developed in Java 21, employing Java Swing for an interactive graphical user interface and SQLite via native Java Database Connectivity (JDBC) for atomic, persistent data storage. Adhering to a robust 3-Tier Layered Architecture, the system ensures a strict separation between presentation workflows, transactional service logic, and repository-level data persistence. Core capabilities encompass atomic product provisioning with unique SKU validation, dynamic catalog monitoring with real-time stock-state badges (NORMAL, LOW, CRITICAL, OUT\_OF\_STOCK, ARCHIVED), and multi-category movement processing (receipts, dispatches, returns, damages, corrections) enforcing strict non-negative quantity guarantees (\texttt{CHECK (quantity >= 0)}).
 
 Furthermore, the system features a rule-based Smart Alert Engine that autonomously evaluates inventory anomalies, an auditable moving-average Demand Analytics module for calculating velocity classifications and reorder triggers without opaque heuristics, and an end-to-end Purchase Order procurement lifecycle supporting idempotent partial goods receipts. Cryptographic user authentication utilizing PBKDF2 with HMAC-SHA256, atomic zero-downtime database backups via SQLite WAL checkpoints, and an exhaustive JUnit 5 automated test suite (20/20 test cases passing) validate the operational safety, transactional reliability, and ACID compliance of the proposed platform.}
 \end{doublespacing}
@@ -208,9 +208,9 @@ Operational analysis across traditional small-to-medium enterprise supply pipeli
 \end{enumerate}
 
 \section{Purpose and Architectural Scope}
-\textbf{IntelliStock AI} is engineered to address these challenges as a dedicated, standalone, high-reliability desktop application. The system strictly avoids internet or cloud dependencies for day-to-day warehouse operations, guaranteeing operational continuity during connectivity outages. 
+\textbf{INTELLISTOCK} is engineered to address these challenges as a dedicated, standalone, high-reliability desktop application. The system strictly avoids internet or cloud dependencies for day-to-day warehouse operations, guaranteeing operational continuity during connectivity outages. 
 
-\textit{System Scope Clarification:} IntelliStock AI is explicitly designed for physical warehouse stock management, inventory tracking, procurement, and physical distribution logistics. It is not an algorithmic financial trading system.
+\textit{System Scope Clarification:} INTELLISTOCK is explicitly designed for physical warehouse stock management, inventory tracking, procurement, and physical distribution logistics. It is not an algorithmic financial trading system.
 
 \begin{figure}[htpb]
   \centering
@@ -225,7 +225,7 @@ Operational analysis across traditional small-to-medium enterprise supply pipeli
     \path [line] (rules) -- (engine);
     \path [line] (engine) -- (output);
   \end{tikzpicture}
-  \caption{Forward Operational Flow of IntelliStock AI}
+  \caption{Forward Operational Flow of INTELLISTOCK}
   \label{fig:forward_flow}
 \end{figure}
 
@@ -242,7 +242,7 @@ Operational analysis across traditional small-to-medium enterprise supply pipeli
     \path [line] (ledger) -- (reconstruct);
     \path [line] (reconstruct) -- (rootcause);
   \end{tikzpicture}
-  \caption{Inverse Audit Reconstruction Flow of IntelliStock AI}
+  \caption{Inverse Audit Reconstruction Flow of INTELLISTOCK}
   \label{fig:inverse_audit}
 \end{figure}
 
@@ -286,7 +286,7 @@ Q_{\text{reorder}} = \max\left(0, T_{\text{stock}} - Q_{\text{current}}\right)
 \label{eq:reorder_calc}
 \end{equation}
 
-This formulaic framework forms the core of the transparent Demand Analytics module implemented in IntelliStock AI.
+This formulaic framework forms the core of the transparent Demand Analytics module implemented in INTELLISTOCK.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Chapter 3: System Analysis
@@ -294,15 +294,15 @@ This formulaic framework forms the core of the transparent Demand Analytics modu
 \label{chap:sys_analysis}
 
 \section{System Boundary and Requirements Engineering}
-The system analysis phase rigorously delineates functional and non-functional requirements while contrasting existing manual workflows against the automated capabilities of IntelliStock AI.
+The system analysis phase rigorously delineates functional and non-functional requirements while contrasting existing manual workflows against the automated capabilities of INTELLISTOCK.
 
 \section{Comparative System Matrix}
 \begin{table}[htpb]
 \centering
-\caption{Comparative Analysis: Legacy Practices vs. IntelliStock AI}
+\caption{Comparative Analysis: Legacy Practices vs. INTELLISTOCK}
 \begin{tabular}{|p{35mm}|p{55mm}|p{55mm}|}
 \hline
-\textbf{Evaluation Dimension} & \textbf{Legacy / Spreadsheet Practice} & \textbf{IntelliStock AI Platform} \\ \hline
+\textbf{Evaluation Dimension} & \textbf{Legacy / Spreadsheet Practice} & \textbf{INTELLISTOCK Platform} \\ \hline
 Data Persistence & Disconnected Excel/CSV workbooks & ACID-compliant SQLite via JDBC \\ \hline
 Concurrency \& Atomicity & No locking; race condition overwrites & Explicit transaction commit/rollback \\ \hline
 Stock Invariants & Unrestricted negative values permissible & Schema CHECK constraint ($Q \ge 0$) \\ \hline
@@ -317,7 +317,7 @@ Currency Storage & Floating-point representation & Monomorphic exact integer cen
 \end{table}
 
 \section{Mathematical Invariants of Inventory State Transitions}
-Every stock transaction within IntelliStock AI satisfies exact conservation invariants. For any movement executed at timestamp $t$:
+Every stock transaction within INTELLISTOCK satisfies exact conservation invariants. For any movement executed at timestamp $t$:
 \begin{equation}
 Q_{\text{result}}(t) = Q_{\text{prev}}(t) + \Delta Q(t)
 \label{eq:inv_state}
@@ -342,7 +342,7 @@ Equation (\ref{eq:po_receipt_bound}) is enforced at the database level by a CHEC
 \label{chap:design}
 
 \section{Three-Tier Layered Architecture}
-IntelliStock AI adopts a modular 3-Tier Layered Architecture structured to eliminate tight coupling between user interfaces and relational storage mechanisms:
+INTELLISTOCK adopts a modular 3-Tier Layered Architecture structured to eliminate tight coupling between user interfaces and relational storage mechanisms:
 \begin{enumerate}
     \item \textbf{Presentation Layer (Java Swing):} Implements custom visual panels hosted within a top-level \texttt{CardLayout} container managed by \texttt{MainFrame}. User inputs are validated prior to service dispatch, and asynchronous database queries are offloaded via \texttt{SwingWorker} to maintain high responsiveness on the \ac{EDT}.
     \item \textbf{Service Layer (Business Logic):} Implements enterprise validation rules, state-machine transitions, moving-average velocity metrics, and cryptographic password hashing routines. Manages transactional demarcation boundaries.
@@ -463,7 +463,7 @@ public static <T> T inTransaction(Connection conn, SqlWork<T> work) throws SQLEx
 User passwords are never retained or persisted in plaintext. Credential protection utilizes \ac{PBKDF2} configured with \ac{HMAC}-SHA256, 65,536 hash stretch rounds, and cryptographically secure 16-byte random salts generated via \texttt{SecureRandom}. Constant-time byte array equality verification prevents timing attacks.
 
 \section{Automated Verification Suite}
-Testing of IntelliStock AI encompasses 20 automated JUnit 5 test cases executing against dedicated, in-memory and temporary file-backed SQLite database instances.
+Testing of INTELLISTOCK encompasses 20 automated JUnit 5 test cases executing against dedicated, in-memory and temporary file-backed SQLite database instances.
 
 \begin{table}[htpb]
 \centering
@@ -517,7 +517,7 @@ BUILD SUCCESS
 \chapter{CONCLUSION}
 \label{chap:concl}
 
-The design and realization of \textbf{IntelliStock AI} delivers a robust, zero-configuration desktop inventory and warehouse management system engineered upon sound software engineering principles. By integrating modern Java 21, Java Swing, and SQLite through transactional JDBC, the software eliminates the critical vulnerabilities endemic to conventional spreadsheet-based inventory practices:
+The design and realization of \textbf{INTELLISTOCK} delivers a robust, zero-configuration desktop inventory and warehouse management system engineered upon sound software engineering principles. By integrating modern Java 21, Java Swing, and SQLite through transactional JDBC, the software eliminates the critical vulnerabilities endemic to conventional spreadsheet-based inventory practices:
 \begin{itemize}
     \item \textbf{Data Integrity:} Guaranteed through ACID transaction boundaries, foreign key enforcement, and database-level \texttt{CHECK (quantity >= 0)} constraints.
     \item \textbf{Proactive Stock Protection:} Achieved through autonomous evaluation of out-of-stock, critical threshold, low stock, and impending batch expirations.
@@ -533,7 +533,7 @@ The resulting platform offers warehouses and wholesale enterprises a reliable op
 \chapter{FUTURE ENHANCEMENT}
 \label{chap:future}
 
-Future iterations of the IntelliStock AI architecture will explore the following functional extensions:
+Future iterations of the INTELLISTOCK architecture will explore the following functional extensions:
 \begin{enumerate}
     \item \textbf{Hardware QR / 2D Barcode Label Generation:} Integrating ZXing libraries to enable on-demand direct thermal printing of adhesive rack and product labels upon SKU registration.
     \item \textbf{Distributed Network Database Adapter:} Providing an interchangeable PostgreSQL/MySQL JDBC repository adapter for high-concurrency multi-terminal warehouse installations while preserving SQLite for standalone single-workstation nodes.

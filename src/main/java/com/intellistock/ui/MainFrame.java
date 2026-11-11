@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
     private String current = "dashboard";
 
     public MainFrame() {
-        super("IntelliStock AI");
+        super("IntelliStock");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(1280, 800);
         setMinimumSize(new Dimension(1100, 680));
@@ -105,7 +105,7 @@ public class MainFrame extends JFrame {
         panel.setBackground(Theme.SIDEBAR);
         panel.setPreferredSize(new Dimension(230, 0));
         panel.setBorder(BorderFactory.createEmptyBorder(16, 12, 16, 12));
-        JLabel brand = new JLabel("IntelliStock AI");
+        JLabel brand = new JLabel("IntelliStock");
         brand.setForeground(Color.WHITE);
         brand.setFont(new Font("Segoe UI", Font.BOLD, 18));
         brand.setAlignmentX(LEFT_ALIGNMENT);

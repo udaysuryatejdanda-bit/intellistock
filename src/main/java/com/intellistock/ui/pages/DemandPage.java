@@ -56,8 +56,8 @@ public class DemandPage implements Page {
 
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
-        header.add(Theme.title("Smart Demand Analytics"), BorderLayout.WEST);
-        header.add(Theme.muted("Moving-average outbound consumption analysis and inventory run-rate projections. Evaluated using transparent formulas, not AI/ML."),
+        header.add(Theme.title("Demand Analytics"), BorderLayout.WEST);
+        header.add(Theme.muted("Moving-average outbound consumption analysis and inventory run-rate projections evaluated using moving-average formulas."),
                 BorderLayout.SOUTH);
 
         // Metrics Row

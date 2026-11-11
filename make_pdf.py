@@ -116,7 +116,7 @@ story = []
 
 # --- 1. TITLE PAGE (Exact SRM Format) ---
 story.append(Spacer(1, 35))
-story.append(Paragraph('<b>INTELLISTOCK AI — INTELLIGENT INVENTORY &amp; STOCK MANAGEMENT SYSTEM</b>', title_style))
+story.append(Paragraph('<b>INTELLISTOCK — INVENTORY &amp; STOCK MANAGEMENT SYSTEM</b>', title_style))
 story.append(Spacer(1, 20))
 story.append(Paragraph('A PROJECT REPORT', subtitle_style))
 story.append(Spacer(1, 20))
@@ -142,7 +142,7 @@ story.append(Spacer(1, 25))
 story.append(Paragraph('<b>BONAFIDE CERTIFICATE</b>', title_style))
 story.append(Spacer(1, 15))
 cert_text = (
-    'Certified that this project report titled <b>&ldquo;INTELLISTOCK AI — INTELLIGENT INVENTORY '
+    'Certified that this project report titled <b>&ldquo;INTELLISTOCK — INVENTORY '
     '&amp; STOCK MANAGEMENT SYSTEM&rdquo;</b> is the bonafide work of <b>UDAY SURYA TEJ DANDA</b>, '
     'who carried out the project work under my supervision. Certified further, that to the best of my knowledge the work '
     'reported herein does not form any other project report or dissertation on the basis of which a degree or award was '
@@ -180,7 +180,7 @@ story.append(Paragraph(
     'and audit-traceable desktop management system.', body_style))
 story.append(Spacer(1, 8))
 story.append(Paragraph(
-    '<b>IntelliStock AI</b> is an enterprise-grade desktop inventory and stock management system developed in Java 21, '
+    '<b>IntelliStock</b> is an enterprise-grade desktop inventory and stock management system developed in Java 21, '
     'leveraging Java Swing for a responsive GUI and SQLite via pure Java Database Connectivity (JDBC) for ACID-compliant '
     'relational persistence. The application strictly adheres to a 3-tier layered architecture separating presentation, '
     'business service logic, and repository access layers.', body_style))

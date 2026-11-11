@@ -117,10 +117,10 @@ public final class DemandPrintReport implements Printable {
 
         g2.setColor(Color.WHITE);
         g2.setFont(FONT_HEADER);
-        drawString(g2, "IntelliStock AI", 14, cursor + 22);
+        drawString(g2, "IntelliStock", 14, cursor + 22);
         g2.setFont(FONT_SUBTITLE);
         g2.setColor(new Color(0xB0BEC5));
-        drawString(g2, "Smart Demand Analysis Report", 14, cursor + 38);
+        drawString(g2, "Demand Analysis Report", 14, cursor + 38);
         g2.setColor(new Color(0xB0BEC5));
         drawStringRight(g2, "Generated: " + generatedAt, w - 14, cursor + 38);
 
@@ -178,7 +178,7 @@ public final class DemandPrintReport implements Printable {
         // ── Footer ───────────────────────────────────────────────────────────
         g2.setFont(FONT_FOOTER);
         g2.setColor(MUTED);
-        drawString(g2, "IntelliStock AI  |  This report uses transparent moving-average formulas – not AI/ML.", 0, cursor + 10);
+        drawString(g2, "IntelliStock  |  Demand Analysis and Inventory Run-Rate Report", 0, cursor + 10);
 
         return PAGE_EXISTS;
     }

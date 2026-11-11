@@ -47,7 +47,7 @@ public final class Main {
                 JOptionPane.showMessageDialog(
                     null,
                     error.toString(),
-                    "IntelliStock AI startup error",
+                    "IntelliStock startup error",
                     JOptionPane.ERROR_MESSAGE
                 );
             }

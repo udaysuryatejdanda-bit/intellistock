@@ -104,7 +104,7 @@ public class SettingsPage implements Page {
         backupInfo.setOpaque(false);
         backupPathLabel.setFont(Theme.SMALL);
         backupInfo.add(backupPathLabel, BorderLayout.NORTH);
-        backupInfo.add(Theme.muted("IntelliStock AI uses SQLite WAL checkpointing and atomic VACUUM INTO for online, zero-downtime backups."),
+        backupInfo.add(Theme.muted("IntelliStock uses SQLite WAL checkpointing and atomic VACUUM INTO for online, zero-downtime backups."),
                 BorderLayout.SOUTH);
 
         JPanel backupActions = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
@@ -138,7 +138,7 @@ public class SettingsPage implements Page {
         aboutCard.add(Theme.title("System & Environment Information"), BorderLayout.NORTH);
 
         String infoHtml = "<html><body style='font-family: Segoe UI, sans-serif; font-size: 11px;'>"
-                + "<b>Application:</b> IntelliStock AI v1.0.0<br>"
+                + "<b>Application:</b> IntelliStock v1.0.0<br>"
                 + "<b>Java Runtime:</b> " + System.getProperty("java.runtime.version") + " (" + System.getProperty("java.vendor") + ")<br>"
                 + "<b>Operating System:</b> " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<br>"
                 + "<b>Database Engine:</b> SQLite Relational Storage (JDBC)<br>"

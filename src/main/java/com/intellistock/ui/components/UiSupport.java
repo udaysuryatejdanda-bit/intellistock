@@ -72,11 +72,11 @@ public final class UiSupport {
     }
 
     public static void error(Component parent, String message) {
-        JOptionPane.showMessageDialog(parent, message, "IntelliStock AI", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, "IntelliStock", JOptionPane.ERROR_MESSAGE);
     }
 
     public static void info(Component parent, String message) {
-        JOptionPane.showMessageDialog(parent, message, "IntelliStock AI", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, "IntelliStock", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static boolean confirm(Component parent, String message) {

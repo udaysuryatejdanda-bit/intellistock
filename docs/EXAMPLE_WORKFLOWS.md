@@ -1,6 +1,6 @@
-# IntelliStock AI — Example Operational Workflows
+# IntelliStock — Example Operational Workflows
 
-This document outlines standard end-to-end operational workflows in IntelliStock AI, detailing user actions, system logic, database mutations, and expected outcomes.
+This document outlines standard end-to-end operational workflows in IntelliStock, detailing user actions, system logic, database mutations, and expected outcomes.
 
 ---
 
@@ -10,7 +10,7 @@ This document outlines standard end-to-end operational workflows in IntelliStock
 A warehouse receives a new catalog item: "Ergonomic Office Chair".
 
 ### Step-by-Step Procedure
-1. Log in to IntelliStock AI with `admin` or `staff` credentials.
+1. Log in to IntelliStock with `admin` or `staff` credentials.
 2. Select **Register Product** from the sidebar navigation.
 3. Fill in the product details:
    - **Product Name:** `Ergonomic Office Chair`

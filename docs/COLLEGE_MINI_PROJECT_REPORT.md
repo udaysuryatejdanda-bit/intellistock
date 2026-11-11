@@ -1,6 +1,6 @@
-# College Mini-Project Report: IntelliStock AI
+# College Mini-Project Report: IntelliStock
 
-**Project Title:** IntelliStock AI — Intelligent Inventory & Stock Management System  
+**Project Title:** IntelliStock — Inventory & Stock Management System  
 **Academic Year:** 2026–2027  
 **Technology Stack:** Java 21, Java Swing GUI, JDBC, SQLite, Maven, JUnit 5  
 
@@ -10,7 +10,7 @@
 
 Inventory management is a critical business function for warehouses, wholesalers, and retail distributors. Manual record-keeping or disconnected spreadsheet tracking frequently causes stock discrepancies, undetected shortages, delayed procurement, and inventory depreciation through expiration. 
 
-**IntelliStock AI** is a robust, desktop-based inventory and warehouse management system developed in Java 21 using Java Swing and SQLite via Java Database Connectivity (JDBC). The application follows an object-oriented 3-tier architecture separating presentation, service logic, and relational persistence. Key capabilities include atomic product registration, real-time catalog search and filtering, multi-type stock movements (receipts, dispatches, damages, returns, adjustments) with strict non-negative quantity guarantees, automated rule-based stock alerts (out-of-stock, critical stock, low stock, product expiry), and moving-average outbound demand analytics for suggested reorder calculations. A procurement pipeline supports draft creation, submission, and partial goods receipt. Role-based access control (RBAC) with PBKDF2 cryptographic password hashing protects administrative functions, and an online database backup and disaster recovery module ensures high data availability. Comprehensive automated testing with JUnit 5 confirms 100% compliance across all core business rules and database constraints.
+**IntelliStock** is a robust, desktop-based inventory and warehouse management system developed in Java 21 using Java Swing and SQLite via Java Database Connectivity (JDBC). The application follows an object-oriented 3-tier architecture separating presentation, service logic, and relational persistence. Key capabilities include atomic product registration, real-time catalog search and filtering, multi-type stock movements (receipts, dispatches, damages, returns, adjustments) with strict non-negative quantity guarantees, automated rule-based stock alerts (out-of-stock, critical stock, low stock, product expiry), and moving-average outbound demand analytics for suggested reorder calculations. A procurement pipeline supports draft creation, submission, and partial goods receipt. Role-based access control (RBAC) with PBKDF2 cryptographic password hashing protects administrative functions, and an online database backup and disaster recovery module ensures high data availability. Comprehensive automated testing with JUnit 5 confirms 100% compliance across all core business rules and database constraints.
 
 ---
 
@@ -22,10 +22,10 @@ In physical inventory management, businesses encounter several major operational
 2. **Stockouts and Critical Depletions:** Businesses lack proactive notification systems when stock falls below replenishment levels, leading to lost customer orders.
 3. **Disorganized Procurement:** Purchasing orders are often coordinated via phone or email without tracking partial deliveries, creating confusion when shipments arrive in installments.
 4. **Spoilage and Expiration Loss:** Perishable items with expiration dates are overlooked until after they expire, causing financial write-offs.
-5. **Opaque Analytics Claims:** Many modern commercial solutions claim artificial intelligence or predictive machine learning when basic statistical run rates or moving averages would be significantly more transparent, reliable, and auditable.
+5. **Complicated Analytics:** Many solutions lack clear, formulaic run rate and consumption tracking, making replenishment guesswork rather than transparent calculation.
 
-### 1.2 Purpose of IntelliStock AI
-IntelliStock AI provides a standalone, reliable desktop solution that enforces relational database constraints, guarantees transaction atomicity, automates alert notifications, computes transparent moving-average demand analytics, and tracks every inventory movement with full audit logging. It is strictly an enterprise warehouse inventory management system, **not** a financial stock-market trading tool.
+### 1.2 Purpose of IntelliStock
+IntelliStock provides a standalone, reliable desktop solution that enforces relational database constraints, guarantees transaction atomicity, automates alert notifications, computes transparent moving-average demand analytics, and tracks every inventory movement with full audit logging. It is strictly an enterprise warehouse inventory management system, **not** a financial stock-market trading tool.
 
 ---
 
@@ -35,15 +35,15 @@ IntelliStock AI provides a standalone, reliable desktop solution that enforces r
 - **Relational Persistence via JDBC:** Use SQLite and native JDBC prepared statements with try-with-resources to prevent SQL injection and resource leaks.
 - **Transactional Consistency:** Wrap multi-entity mutations (e.g. product registration with initial stock, stock dispatches, partial goods receipts) inside explicit database transactions (`commit`/`rollback`).
 - **Enforce Business Constraints:** Prevent negative stock balances at both the UI and database schema level (`CHECK (quantity >= 0)`).
-- **Smart Rule-Based Alert Engine:** Dynamically calculate inventory alerts based on real-time quantities, thresholds, and expiration dates.
-- **Transparent Run-Rate Analytics:** Implement a moving-average outbound velocity model comparing recent demand against baseline history to calculate days of supply and reorder suggestions without unverified AI/ML claims.
+- **Rule-Based Alert Engine:** Dynamically calculate inventory alerts based on real-time quantities, thresholds, and expiration dates.
+- **Run-Rate Analytics:** Implement a moving-average outbound velocity model comparing recent demand against baseline history to calculate days of supply and reorder suggestions using transparent formulas.
 - **Security & Auditing:** Secure user credentials using PBKDF2 with HMAC-SHA256 and log all significant operations in an immutable audit ledger.
 
 ---
 
 ## 3. Existing System vs. Proposed System
 
-| Feature | Existing Spreadsheet / Legacy System | Proposed IntelliStock AI System |
+| Feature | Existing Spreadsheet / Legacy System | Proposed IntelliStock System |
 | :--- | :--- | :--- |
 | **Data Storage** | Disconnected Excel/CSV files or flat files | Centralized ACID-compliant SQLite relational database |
 | **Data Integrity** | Prone to accidental overwrites and negative stock | Enforced via primary/foreign keys, `CHECK` constraints, and transactions |
@@ -58,7 +58,7 @@ IntelliStock AI provides a standalone, reliable desktop solution that enforces r
 
 ## 4. System Architecture
 
-IntelliStock AI is designed around a classic **3-Tier Layered Architecture**:
+IntelliStock is designed around a classic **3-Tier Layered Architecture**:
 
 ```mermaid
 graph TD
@@ -194,7 +194,7 @@ graph TD
 
 ## 9. Test Results & Verification
 
-IntelliStock AI includes a comprehensive JUnit 5 test suite with 20 automated unit and integration tests.
+IntelliStock includes a comprehensive JUnit 5 test suite with 20 automated unit and integration tests.
 
 | Class | Tests Run | Passed | Failures | Errors | Result |
 | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -226,4 +226,4 @@ IntelliStock AI includes a comprehensive JUnit 5 test suite with 20 automated un
 4. **Predictive Seasonal Forecasts:** Incorporate Holt-Winters exponential smoothing for seasonal retail inventory spikes.
 
 ### 11.2 Conclusion
-IntelliStock AI successfully delivers a robust, reliable, and user-friendly inventory management platform. By leveraging Java 21, Java Swing, JDBC, SQLite transactions, and clean object-oriented architecture, the system provides full transparency, data consistency, and operational safety for physical warehouse operations.
+IntelliStock successfully delivers a robust, reliable, and user-friendly inventory management platform. By leveraging Java 21, Java Swing, JDBC, SQLite transactions, and clean object-oriented architecture, the system provides full transparency, data consistency, and operational safety for physical warehouse operations.

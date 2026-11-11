@@ -1,8 +1,8 @@
-# IntelliStock AI — Database Schema & Relational Design
+# IntelliStock — Database Schema & Relational Design
 
 ## 1. Overview & Storage Engine
 
-IntelliStock AI uses **SQLite** as its persistent local relational database engine, interfaced exclusively through standard Java **JDBC** (`java.sql.Connection`, `PreparedStatement`, `ResultSet`, and transactions). 
+IntelliStock uses **SQLite** as its persistent local relational database engine, interfaced exclusively through standard Java **JDBC** (`java.sql.Connection`, `PreparedStatement`, `ResultSet`, and transactions). 
 
 ### Connection Configuration & Pragmas
 Every database connection opened via `Database.open()` automatically configures:

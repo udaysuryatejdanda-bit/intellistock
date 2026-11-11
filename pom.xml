@@ -7,8 +7,8 @@
     <groupId>com.intellistock</groupId>
     <artifactId>intellistock-ai</artifactId>
     <version>1.0.0</version>
-    <name>IntelliStock AI</name>
-    <description>Intelligent Inventory and Stock Management System</description>
+    <name>IntelliStock</name>
+    <description>Inventory and Stock Management System</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

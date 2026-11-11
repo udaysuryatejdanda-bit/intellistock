@@ -1,9 +1,9 @@
-# IntelliStock AI — Presentation Outline & Viva Guide
+# IntelliStock — Presentation Outline & Viva Guide
 
 ## 1. Presentation Slide Structure
 
 ### Slide 1: Title & Project Overview
-- **Title:** IntelliStock AI — Intelligent Inventory & Stock Management System
+- **Title:** IntelliStock — Inventory & Stock Management System
 - **Domain:** Enterprise Desktop Systems & Warehouse Automation
 - **Technology Stack:** Java 21, Java Swing, JDBC, SQLite, Maven, JUnit 5
 - **Key Message:** High-reliability physical inventory management with ACID transaction safety and smart stock alerts (not a stock-market app).
@@ -45,7 +45,7 @@
 - Moving-average outbound velocity model comparing recent demand against baseline periods.
 - Velocity classification: `FAST`, `MEDIUM`, `SLOW`, `NO_MOVEMENT`.
 - Run-rate projection: Days of supply remaining and suggested reorder calculation using lead time and safety stock.
-- Transparent formula — honest labeling without artificial AI/ML claims.
+- Transparent formula — calculated using moving-average consumption math.
 
 ### Slide 9: Core Feature 5 — Purchase Order Procurement
 - Vendor relationship management.

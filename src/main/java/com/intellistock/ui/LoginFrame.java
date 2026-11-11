@@ -25,7 +25,7 @@ public class LoginFrame extends JFrame {
     private final JButton login = Theme.primary("Sign in");
 
     public LoginFrame() {
-        super("IntelliStock AI — Sign in");
+        super("IntelliStock — Sign in");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(980, 620);
         setMinimumSize(new Dimension(860, 540));
@@ -47,9 +47,8 @@ public class LoginFrame extends JFrame {
         panel.setBackground(Theme.SIDEBAR);
         panel.setPreferredSize(new Dimension(380, 0));
         panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(48, 36, 48, 36));
-        JLabel title = new JLabel("<html><div style='color:white'><h1>IntelliStock AI</h1>"
-                + "<p>Intelligent inventory and stock management for warehouses, supplies, and purchase orders.</p>"
-                + "<p style='color:#93C5FD'>This is a company inventory system, not a stock-market application.</p></div></html>");
+        JLabel title = new JLabel("<html><div style='color:white'><h1>IntelliStock</h1>"
+                + "<p>Inventory and stock management for warehouses, supplies, and purchase orders.</p></div></html>");
         title.setForeground(Color.WHITE);
         panel.add(title, BorderLayout.NORTH);
         return panel;
